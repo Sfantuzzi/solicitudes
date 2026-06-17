@@ -389,8 +389,7 @@
 </div>
 
 <script>
-const CLICKUP_TOKEN = "pk_89658191_MS00PM6AL4XAQ9FOFIE6FIE92JQMQ7EF";
-const CLICKUP_LIST  = "901817936398";
+const WORKER_URL = "https://little-wave-4f7a.sebastian-c60.workers.dev";
 
 const CATS = {
   equipo: {
@@ -586,12 +585,9 @@ async function submitForm() {
   };
 
   try {
-    const res = await fetch(`https://api.clickup.com/api/v2/list/${CLICKUP_LIST}/task`, {
+    const res = await fetch(WORKER_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": CLICKUP_TOKEN
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(body)
     });
     const data = await res.json();
