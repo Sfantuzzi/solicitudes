@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)file:///Users/sebastianfantuzzi/Downloads/formulario-solicitudes_5.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro de Solicitudes · Managers</title>
+<link href="./Centro de Solicitudes · Managers_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F4F0;
+    --card: #FFFFFF;
+    --dark: #111210;
+    --gray: #6B6A67;
+    --border: #E2E1DC;
+    --blue: #2563EB;
+    --green: #16A34A;
+    --red: #DC2626;
+    --purple: #7C3AED;
+    --amber: #D97706;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--dark);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon { font-size: 22px; }
+  .logo-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .logo-sub { font-size: 11px; color: #9CA3AF; margin-top: 1px; font-family: 'DM Mono', monospace; }
+  .date-chip { font-size: 12px; color: #9CA3AF; background: #1F2937; padding: 6px 14px; border-radius: 20px; font-family: 'DM Mono', monospace; }
+
+  /* STEPPER */
+  .stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 32px 0 24px;
+  }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .step-circle {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    background: var(--border); color: #9CA3AF;
+    transition: all 0.25s;
+  }
+  .step-circle.active { background: var(--blue); color: #fff; }
+  .step-circle.done { background: var(--green); color: #fff; }
+  .step-label { font-size: 11px; font-weight: 600; color: #9CA3AF; transition: color 0.25s; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+  .step-label.active, .step-label.done { color: var(--blue); }
+  .step-label.done { color: var(--green); }
+  .step-line { width: 72px; height: 2px; background: var(--border); margin: 0 8px; margin-bottom: 22px; transition: background 0.25s; flex-shrink: 0; }
+  .step-line.done { background: var(--green); }
+
+  /* CARD */
+  .card {
+    max-width: 660px;
+    margin: 0 auto 60px;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 36px 40px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    border: 1px solid var(--border);
+  }
+
+  .section-title {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title span { font-size: 20px; }
+  .section-title h2 { font-size: 17px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; }
+
+  /* FIELDS */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 7px; }
+  .field label .req { color: var(--red); }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 14px;
+    color: var(--dark); background: #FAFAF8;
+    font-family: 'DM Sans', sans-serif;
+    outline: none; transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); background: #fff; }
+  .field textarea { height: 96px; resize: vertical; line-height: 1.6; }
+  .field textarea.small { height: 72px; }
+  .field .error-msg { font-size: 12px; color: var(--red); margin-top: 4px; }
+  .field input.err, .field select.err, .field textarea.err { border-color: var(--red); background: #FEF2F2; }
+
+  /* CATEGORY CARDS */
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
+  .cat-card {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 16px 10px; border: 2px solid var(--border);
+    border-radius: 12px; cursor: pointer; background: var(--card);
+    transition: all 0.15s; text-align: center;
+  }
+  .cat-card:hover { border-color: #9CA3AF; }
+  .cat-card .cat-icon { font-size: 24px; }
+  .cat-card .cat-name { font-size: 12px; font-weight: 700; color: #374151; line-height: 1.3; }
+  .cat-card .cat-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #F3F4F6; color: #9CA3AF; }
+
+  /* PRIORITY */
+  .prio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .prio-btn {
+    padding: 8px 20px; border-radius: 20px;
+    border: 2px solid var(--border); background: #fff;
+    color: #6B7280; font-weight: 600; cursor: pointer;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  /* CLIENTE BOX */
+  .cliente-box {
+    background: #F0FDF4; border: 1.5px solid #BBF7D0;
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .cliente-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-weight: 700; font-size: 14px; }
+
+  /* REVIEW BOX */
+  .review-box {
+    background: #F8FAFC; border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 20px; margin-top: 24px; margin-bottom: 8px;
+  }
+  .review-title { font-weight: 700; font-size: 11px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; font-family: 'DM Mono', monospace; }
+  .review-row { display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; }
+  .review-row .rl { color: #9CA3AF; min-width: 100px; }
+  .review-row .rv { color: var(--dark); font-weight: 500; }
+  .review-row .rv.highlight { color: var(--green); font-weight: 700; }
+
+  /* ERROR BOX */
+  .error-box {
+    background: #FEF2F2; border: 1px solid #FECACA;
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 14px; color: var(--red); margin-top: 12px;
+  }
+  .error-box small { display: block; margin-top: 6px; font-size: 12px; color: #991B1B; }
+
+  /* NAV */
+  .nav-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 32px; padding-top: 24px; border-top: 1px solid #F3F4F6;
+  }
+  .btn-primary {
+    padding: 12px 28px; background: var(--blue); color: #fff;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #1D4ED8; }
+  .btn-primary.green { background: var(--green); }
+  .btn-primary.green:hover { background: #15803D; }
+  .btn-primary:disabled { background: #9CA3AF; cursor: not-allowed; }
+  .btn-secondary {
+    padding: 12px 24px; background: #fff; color: #374151;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-secondary:hover { background: #F9FAFB; }
+
+  /* SUCCESS */
+  .success-card {
+    max-width: 500px; margin: 80px auto;
+    background: var(--card); border-radius: 20px;
+    padding: 52px 48px; text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
+  }
+  .success-icon {
+    width: 64px; height: 64px; background: #DCFCE7; color: var(--green);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; margin: 0 auto 20px;
+  }
+  .success-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .success-sub { font-size: 15px; color: var(--gray); margin-bottom: 28px; }
+  .clickup-link {
+    display: inline-block; padding: 10px 24px; background: #7B68EE;
+    color: #fff; border-radius: 8px; text-decoration: none;
+    font-weight: 600; font-size: 14px; margin-bottom: 16px;
+  }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <div>
+      <div class="logo-title">Centro de Solicitudes</div>
+      <div class="logo-sub">Asistencia a Managers · ClickUp</div>
+    </div>
+  </div>
+  <div class="date-chip" id="fecha-header">📅 15 de junio de 2026</div>
+</header>
+
+<!-- STEPPER -->
+<div class="stepper">
+  <div class="step">
+    <div class="step-circle active" id="sc1">1</div>
+    <div class="step-label active" id="sl1">Identificación</div>
+  </div>
+  <div class="step-line" id="line1"></div>
+  <div class="step">
+    <div class="step-circle" id="sc2">2</div>
+    <div class="step-label" id="sl2">Solicitud</div>
+  </div>
+  <div class="step-line" id="line2"></div>
+  <div class="step">
+    <div class="step-circle" id="sc3">3</div>
+    <div class="step-label" id="sl3">Acción</div>
+  </div>
+</div>
+
+<!-- STEPS -->
+<div id="step1" class="card">
+  <div class="section-title"><span>🏷️</span><h2>Identificación del Manager</h2></div>
+  <div class="grid2">
+    <div class="field">
+      <label>Nombre del Manager <span class="req">*</span></label>
+      <input type="text" id="manager" placeholder="Ej: María García">
+      <div class="error-msg hidden" id="err-manager">Requerido</div>
+    </div>
+    <div class="field">
+      <label>Pod / Equipo <span class="req">*</span></label>
+      <select id="equipo" onchange="onEquipoChange(this.value)"><option value="">Selecciona un pod...</option><option value="Alpha">Alpha</option><option value="Beta">Beta</option><option value="Gamma">Gamma</option><option value="Delta">Delta</option><option value="Epsilon">Epsilon</option><option value="Zeta">Zeta</option><option value="Kappa">Kappa</option><option value="Omega">Omega</option><option value="Rho">Rho</option><option value="Sigma">Sigma</option><option value="Manager Nuevo">🎓 Manager Nuevo</option></select>
+      <div class="error-msg hidden" id="err-equipo">Requerido</div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Fecha de Solicitud</label>
+    <input type="date" id="fecha">
+  </div>
+  <div class="nav-row">
+    <div></div>
+    <button class="btn-primary" onclick="goStep(2)">Siguiente →</button>
+  </div>
+</div>
+
+<div id="step2" class="card hidden">
+  <div class="section-title"><span>📂</span><h2>Categoría y Descripción</h2></div>
+
+  <div class="field">
+    <label>Categoría <span class="req">*</span></label>
+    <div class="cat-grid">
+      <div class="cat-card" id="cat-equipo" onclick="selectCat(&#39;equipo&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255);">
+        <span class="cat-icon">👥</span>
+        <span class="cat-name" style="color: rgb(55, 65, 81);">Gestión de Equipo</span>
+      </div>
+      <div class="cat-card" id="cat-cargados" onclick="selectCat(&#39;cargados&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255);">
+        <span class="cat-icon">🗄️</span>
+        <span class="cat-name" style="color: rgb(55, 65, 81);">Cargados / Bases de Datos</span>
+        <span class="cat-badge">Incluye cliente</span>
+      </div>
+      <div class="cat-card" id="cat-otras" onclick="selectCat(&#39;otras&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255);">
+        <span class="cat-icon">📋</span>
+        <span class="cat-name" style="color: rgb(55, 65, 81);">Otras Solicitudes</span>
+        <span class="cat-badge">Incluye cliente</span>
+      </div>
+      <div class="cat-card" id="cat-capacitacion" onclick="selectCat(&#39;capacitacion&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255);">
+        <span class="cat-icon">🎓</span>
+        <span class="cat-name" style="color: rgb(55, 65, 81);">Capacitación Manager</span>
+      </div>
+    </div>
+    <div class="error-msg hidden" id="err-cat">Selecciona una categoría</div>
+  </div>
+
+  <div class="field">
+    <label>Tipo de Solicitud <span class="req">*</span></label>
+    <select id="subcategoria"><option value="">Selecciona un tipo...</option></select>
+    <div class="error-msg hidden" id="err-sub">Selecciona un tipo</div>
+  </div>
+
+  <div id="cliente-box" class="cliente-box hidden">
+    <div class="cliente-header">🏷️ <span id="cliente-title" style="color: rgb(124, 58, 237);">Información del Cliente</span></div>
+    <div class="field" style="margin-bottom:0">
+      <label>Nombre del Cliente <span class="req">*</span></label>
+      <input type="text" id="cliente" placeholder="Ej: Empresa S.A." style="border-color:#86EFAC">
+      <div class="error-msg hidden" id="err-cliente">Requerido</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Título de la Solicitud <span class="req">*</span></label>
+    <input type="text" id="titulo" placeholder="Resumen breve del caso">
+    <div class="error-msg hidden" id="err-titulo">Requerido</div>
+  </div>
+  <div class="field">
+    <label>Descripción Detallada <span class="req">*</span></label>
+    <textarea id="descripcion" placeholder="Explica el contexto, qué sucedió, información relevante..."></textarea>
+    <div class="error-msg hidden" id="err-desc">Requerido</div>
+  </div>
+  <div class="field">
+    <label>Personas Involucradas</label>
+    <input type="text" id="personas" placeholder="Ej: Juan López, Ana Ruiz (opcional)">
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goStep(1)">← Anterior</button>
+    <button class="btn-primary" onclick="goStep(3)">Siguiente →</button>
+  </div>
+</div>
+
+<div id="step3" class="card hidden">
+  <div class="section-title"><span>⚙️</span><h2>Prioridad y Acción</h2></div>
+
+  <div class="field">
+    <label>Prioridad</label>
+    <div class="prio-row">
+      <button class="prio-btn" id="prio-baja" onclick="selectPrio(&#39;baja&#39;,&#39;#6B7280&#39;,&#39;#F3F4F6&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255); color: rgb(107, 114, 128);">Baja</button>
+      <button class="prio-btn" id="prio-media" onclick="selectPrio(&#39;media&#39;,&#39;#D97706&#39;,&#39;#FEF3C7&#39;)" style="border-color: rgb(217, 119, 6); background: rgb(254, 243, 199); color: rgb(217, 119, 6);">Media</button>
+      <button class="prio-btn" id="prio-alta" onclick="selectPrio(&#39;alta&#39;,&#39;#DC2626&#39;,&#39;#FEE2E2&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255); color: rgb(107, 114, 128);">Alta</button>
+      <button class="prio-btn" id="prio-urgente" onclick="selectPrio(&#39;urgente&#39;,&#39;#7C3AED&#39;,&#39;#EDE9FE&#39;)" style="border-color: rgb(226, 225, 220); background: rgb(255, 255, 255); color: rgb(107, 114, 128);">Urgente</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Acción Requerida <span class="req">*</span></label>
+    <textarea id="accion" placeholder="¿Qué necesitas hacer o qué espera el manager que hagas?"></textarea>
+    <div class="error-msg hidden" id="err-accion">Requerido</div>
+  </div>
+  <div class="field">
+    <label>Fecha Límite (opcional)</label>
+    <input type="date" id="fecha-limite">
+  </div>
+  <div class="field">
+    <label>Notas Adicionales</label>
+    <textarea class="small" id="notas" placeholder="Cualquier información extra relevante..."></textarea>
+  </div>
+
+  <div class="review-box">
+    <div class="review-title">Resumen de la solicitud</div>
+    <div class="review-row"><span class="rl">Manager:</span><span class="rv" id="rv-manager">Manuel Chadwick</span></div>
+    <div class="review-row"><span class="rl">Equipo:</span><span class="rv" id="rv-equipo">Epsilon</span></div>
+    <div class="review-row"><span class="rl">Categoría:</span><span class="rv" id="rv-cat">Otras Solicitudes</span></div>
+    <div class="review-row" id="rv-cliente-row"><span class="rl">Cliente:</span><span class="rv highlight" id="rv-cliente">Renta 4</span></div>
+    <div class="review-row"><span class="rl">Tipo:</span><span class="rv" id="rv-sub">Otro</span></div>
+    <div class="review-row"><span class="rl">Título:</span><span class="rv" id="rv-titulo">Replicar AFEX en Renta 4</span></div>
+  </div>
+
+  <div class="error-box hidden" id="api-error">
+    <span id="api-error-msg"></span>
+    <small>Asegúrate de tener conexión a internet.</small>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goStep(2)">← Anterior</button>
+    <button class="btn-primary green" id="btn-submit" onclick="submitForm()" disabled="">⏳ Enviando a ClickUp...</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="hidden">
+  <div class="success-card">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">¡Tarea creada en ClickUp!</h2>
+    <p class="success-sub">La solicitud de <strong id="s-manager">Manuel Chadwick</strong> fue registrada exitosamente.</p>
+    <div class="review-box" style="text-align:left;margin-bottom:24px">
+      <div class="review-title">Resumen</div>
+      <div class="review-row"><span class="rl">Categoría:</span><span class="rv" id="s-cat">Otras Solicitudes</span></div>
+      <div class="review-row" id="s-cliente-row"><span class="rl">Cliente:</span><span class="rv highlight" id="s-cliente">Renta 4</span></div>
+      <div class="review-row"><span class="rl">Tipo:</span><span class="rv" id="s-sub">Otro</span></div>
+      <div class="review-row"><span class="rl">Título:</span><span class="rv" id="s-titulo">Replicar AFEX en Renta 4</span></div>
+      <div class="review-row"><span class="rl">Prioridad:</span><span class="rv" id="s-prio">Alta</span></div>
+    </div>
+    <a id="clickup-link" href="https://app.clickup.com/t/86exyr8ed" target="_blank" class="clickup-link">🔗 Ver tarea en ClickUp</a><br>
+    <button class="btn-primary" style="margin-top:8px" onclick="resetForm()">Nueva Solicitud</button>
+  </div>
+</div>
+
+<script>
+const CLICKUP_TOKEN = "pk_89658191_MS00PM6AL4XAQ9FOFIE6FIE92JQMQ7EF";
+const CLICKUP_LIST  = "901817936398";
+
+const CATS = {
+  equipo: {
+    label: "Gestión de Equipo", color: "#2563EB", tieneCliente: false,
+    subs: ["Problema de rendimiento individual","Conflicto entre miembros del equipo","Ausentismo o puntualidad","Evaluación de desempeño","Plan de mejora (PIP)","Reconocimiento / logro del equipo","Reestructuración del equipo","Otro"]
+  },
+  cargados: {
+    label: "Cargados / Bases de Datos", color: "#059669", tieneCliente: true,
+    subs: ["Creación de nueva base de datos","Optimización de base existente","Carga masiva de datos","Revisión de propuesta de valor","Análisis de resultados","Corrección de errores en datos","Otro"]
+  },
+  otras: {
+    label: "Otras Solicitudes", color: "#7C3AED", tieneCliente: true,
+    subs: ["Reporte para dirección","Coordinación entre equipos","Seguimiento de acuerdos","Solicitud de recursos","Capacitación / formación","Proceso administrativo","Otro"]
+  },
+  capacitacion: {
+    label: "Capacitación Manager", color: "#EA580C", tieneCliente: false,
+    subs: [
+      "Cápsula Cargados 1 — Excel, Apollo y SN",
+      "Cápsula Cargados 2 — Estructurar cargado correo / llamado / Instantly",
+      "Cápsula Liderazgo 1 — Reglas, comunicación, campañas y weeklys",
+      "Ayuda en el día a día — Gestión de equipo",
+      "Ayuda en el día a día — Cargados",
+      "Ayuda en el día a día — Otro",
+      "Otra Solicitud"
+    ]
+  }
+};
+
+const PRIOS = { baja:4, media:3, alta:2, urgente:1 };
+const PRIO_LABELS = { baja:"Baja", media:"Media", alta:"Alta", urgente:"Urgente" };
+
+let state = {
+  step: 1, cat: "", prio: "media"
+};
+
+// Init
+document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+
+function onEquipoChange(val) {
+  if (val === "Manager Nuevo") {
+    // Auto-select capacitacion and jump to step 2
+    if (validate(1)) {
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      state.step = 2;
+      updateStepper(2);
+      selectCat("capacitacion");
+    }
+  }
+}
+document.getElementById("fecha-header").textContent = "📅 " + new Date().toLocaleDateString("es-ES", {day:"2-digit",month:"long",year:"numeric"});
+selectPrio("media","#D97706","#FEF3C7");
+
+function updateStepper(s) {
+  [1,2,3].forEach(n => {
+    const c = document.getElementById("sc"+n);
+    const l = document.getElementById("sl"+n);
+    c.className = "step-circle" + (n < s ? " done" : n === s ? " active" : "");
+    c.textContent = n < s ? "✓" : n;
+    l.className = "step-label" + (n <= s ? (n < s ? " done" : " active") : "");
+  });
+  [1,2].forEach(n => {
+    document.getElementById("line"+n).className = "step-line" + (n < s ? " done" : "");
+  });
+}
+
+function goStep(n) {
+  if (n > state.step && !validate(state.step)) return;
+  document.getElementById("step"+state.step).classList.add("hidden");
+  document.getElementById("step"+n).classList.remove("hidden");
+  state.step = n;
+  updateStepper(n);
+  if (n === 3) fillReview();
+}
+
+function validate(s) {
+  let ok = true;
+  if (s === 1) {
+    ok = checkField("manager","err-manager") && ok;
+    ok = checkField("equipo","err-equipo") && ok;
+  }
+  if (s === 2) {
+    if (!state.cat) { show("err-cat"); ok = false; } else hide("err-cat");
+    ok = checkField("subcategoria","err-sub") && ok;
+    if (CATS[state.cat]?.tieneCliente) ok = checkField("cliente","err-cliente") && ok;
+    ok = checkField("titulo","err-titulo") && ok;
+    ok = checkField("descripcion","err-desc") && ok;
+  }
+  if (s === 3) {
+    ok = checkField("accion","err-accion") && ok;
+  }
+  return ok;
+}
+
+function checkField(id, errId) {
+  const el = document.getElementById(id);
+  const val = el.value.trim();
+  if (!val) { el.classList.add("err"); show(errId); return false; }
+  el.classList.remove("err"); hide(errId); return true;
+}
+
+function show(id) { document.getElementById(id).classList.remove("hidden"); }
+function hide(id) { document.getElementById(id).classList.add("hidden"); }
+
+function selectCat(key) {
+  state.cat = key;
+  hide("err-cat");
+  Object.keys(CATS).forEach(k => {
+    const card = document.getElementById("cat-"+k);
+    card.style.borderColor = k === key ? CATS[k].color : "#E2E1DC";
+    card.style.background = k === key ? CATS[k].color+"12" : "#fff";
+    card.querySelector(".cat-name").style.color = k === key ? CATS[k].color : "#374151";
+  });
+  // Subcategorías
+  const sel = document.getElementById("subcategoria");
+  sel.innerHTML = '<option value="">Selecciona un tipo...</option>';
+  CATS[key].subs.forEach(s => {
+    const o = document.createElement("option"); o.value = s; o.textContent = s; sel.appendChild(o);
+  });
+  // Cliente
+  const cb = document.getElementById("cliente-box");
+  if (CATS[key].tieneCliente) {
+    cb.classList.remove("hidden");
+    document.getElementById("cliente-title").style.color = CATS[key].color;
+  } else {
+    cb.classList.add("hidden");
+    document.getElementById("cliente").value = "";
+  }
+}
+
+function selectPrio(key, color, bg) {
+  state.prio = key;
+  Object.keys(PRIOS).forEach(k => {
+    const btn = document.getElementById("prio-"+k);
+    btn.style.borderColor = "#E2E1DC"; btn.style.background = "#fff"; btn.style.color = "#6B7280";
+  });
+  const btn = document.getElementById("prio-"+key);
+  btn.style.borderColor = color; btn.style.background = bg; btn.style.color = color;
+}
+
+function fillReview() {
+  document.getElementById("rv-manager").textContent = document.getElementById("manager").value;
+  document.getElementById("rv-equipo").textContent = document.getElementById("equipo").value;
+  document.getElementById("rv-cat").textContent = CATS[state.cat]?.label || "";
+  document.getElementById("rv-sub").textContent = document.getElementById("subcategoria").value;
+  document.getElementById("rv-titulo").textContent = document.getElementById("titulo").value;
+  const cli = document.getElementById("cliente").value;
+  if (cli) { document.getElementById("rv-cliente").textContent = cli; show("rv-cliente-row"); }
+  else hide("rv-cliente-row");
+}
+
+async function submitForm() {
+  if (!validate(3)) return;
+  const btn = document.getElementById("btn-submit");
+  btn.disabled = true; btn.textContent = "⏳ Enviando a ClickUp...";
+  hide("api-error");
+
+  const cat = CATS[state.cat];
+  const cliente = cat.tieneCliente ? document.getElementById("cliente").value : "";
+  const titulo = document.getElementById("titulo").value;
+  const fechaLimite = document.getElementById("fecha-limite").value;
+  const notas = document.getElementById("notas").value;
+  const personas = document.getElementById("personas").value;
+
+  const lines = [
+    "📋 SOLICITUD DE MANAGER","",
+    `👤 Manager: ${document.getElementById("manager").value}`,
+    `🏢 Equipo / Área: ${document.getElementById("equipo").value}`,
+    `📅 Fecha de solicitud: ${document.getElementById("fecha").value}`,
+    "","---","",
+    `📂 Categoría: ${cat.label}`,
+    `🔖 Tipo: ${document.getElementById("subcategoria").value}`,
+    cat.tieneCliente ? `🏷️ Cliente: ${cliente}` : null,
+    "","📝 Descripción:",
+    document.getElementById("descripcion").value,"",
+    personas ? `👥 Personas involucradas: ${personas}` : null,
+    "","---","","⚙️ Acción requerida:",
+    document.getElementById("accion").value,"",
+    notas ? `📌 Notas adicionales: ${notas}` : null,
+  ].filter(Boolean).join("\n").trim();
+
+  const taskName = cat.tieneCliente
+    ? `[${cat.label}] ${cliente} · ${titulo}`
+    : `[${cat.label}] ${titulo}`;
+
+  const body = {
+    name: taskName,
+    description: lines,
+    priority: PRIOS[state.prio],
+    equipo: document.getElementById("equipo").value,
+    titulo: titulo,
+    ...(fechaLimite ? { due_date: new Date(fechaLimite).getTime(), due_date_time: false } : {})
+  };
+
+  try {
+    const res = await fetch(`https://api.clickup.com/api/v2/list/${CLICKUP_LIST}/task`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": CLICKUP_TOKEN
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.err || data.message || "Error al crear la tarea");
+
+    // Success
+    document.getElementById("step3").classList.add("hidden");
+    document.getElementById("success").classList.remove("hidden");
+    document.getElementById("s-manager").textContent = document.getElementById("manager").value;
+    document.getElementById("s-cat").textContent = cat.label;
+    document.getElementById("s-sub").textContent = document.getElementById("subcategoria").value;
+    document.getElementById("s-titulo").textContent = titulo;
+    document.getElementById("s-prio").textContent = PRIO_LABELS[state.prio];
+    if (cliente) { document.getElementById("s-cliente").textContent = cliente; show("s-cliente-row"); }
+    if (data.url) { const a = document.getElementById("clickup-link"); a.href = data.url; a.classList.remove("hidden"); }
+
+  } catch(e) {
+    document.getElementById("api-error-msg").textContent = "⚠️ " + e.message;
+    show("api-error");
+    btn.disabled = false; btn.textContent = "✓ Registrar en ClickUp";
+  }
+}
+
+function resetForm() {
+  document.getElementById("success").classList.add("hidden");
+  document.getElementById("step1").classList.remove("hidden");
+  state = { step:1, cat:"", prio:"media" };
+  updateStepper(1);
+  ["manager","cliente","titulo","descripcion","personas","accion","notas","fecha-limite"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+  document.getElementById("subcategoria").innerHTML = '<option value="">Selecciona un tipo...</option>'; document.getElementById("equipo").value = "";
+  document.getElementById("cliente-box").classList.add("hidden");
+  Object.keys(CATS).forEach(k => {
+    const card = document.getElementById("cat-"+k);
+    card.style.borderColor = "#E2E1DC"; card.style.background = "#fff";
+    card.querySelector(".cat-name").style.color = "#374151";
+  });
+  selectPrio("media","#D97706","#FEF3C7");
+}
+</script>
+
+
+</body></html>
